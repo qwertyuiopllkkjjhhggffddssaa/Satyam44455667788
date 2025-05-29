@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact Me</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Popup Modal Styling */
+    .popup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+    }
+
+    .popup-content {
+      background: #111;
+      padding: 2rem;
+      border: 2px solid #0ff;
+      border-radius: 12px;
+      text-align: center;
+      color: #fff;
+      box-shadow: 0 0 20px #0ff;
+      font-size: 1.2rem;
+    }
+
+    .popup.show {
+      display: flex;
+    }
+
+    .popup .btn-close {
+      margin-top: 1rem;
+      background: transparent;
+      border: 1px solid #0ff;
+      color: #0ff;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .popup .btn-close:hover {
+      background-color: #0ff;
+      color: #111;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="container">
+      <a href="index.html" class="logo">Ecometrix</a>
+      <nav class="nav">
+        <ul class="nav-list">
+          <li><a href="index.html">Home</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Contact Form Section -->
+  <section class="contact-form-section">
+    <div class="container">
+      <h2 class="section-title">Get in Touch</h2>
+      <form id="contact-form" class="contact-form">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" required placeholder="Your Name" />
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="_replyto" required placeholder="you@example.com" />
+        </div>
+
+        <div class="form-group">
+          <label for="phone">Mobile Number</label>
+          <input
+            type="tel"
+            id="phone"
+            name="phone"
+            placeholder="Enter 10-digit mobile number"
+            pattern="[0-9]{10}"
+            maxlength="10"
+            required
+            title="Please enter a valid 10-digit mobile number"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" rows="5" required placeholder="Your message here..."></textarea>
+        </div>
+
+        <button type="submit" class="btn-primary">Send Message</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Custom Popup -->
+  <div id="popup" class="popup">
+    <div class="popup-content">
+      ✅ Message sent successfully! I’ll get back to you soon.
+      <br />
+      <button class="btn-close" onclick="closePopup()">Close</button>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById("contact-form");
+    const popup = document.getElementById("popup");
+
+    form.addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      const data = new FormData(form);
+      const endpoint = "https://formspree.io/f/xrbqnqar"; // Replace with your real endpoint
+
+      const response = await fetch(endpoint, {
+        method: "POST",
+        body: data,
+        headers: {
+          'Accept': 'application/json'
+        }
+      });
+
+      if (response.ok) {
+        form.reset();
+        popup.classList.add("show");
+      } else {
+        popup.querySelector(".popup-content").innerHTML = "❌ Something went wrong. Please try again later.<br><button class='btn-close' onclick='closePopup()'>Close</button>";
+        popup.classList.add("show");
+      }
+    });
+
+    function closePopup() {
+      popup.classList.remove("show");
+    }
+  </script>
+
+</body>
+</html>
